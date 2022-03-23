@@ -23,11 +23,17 @@ class Bot:
         self.cookie_count = WebDriverWait(self.driver, 60).until(
             EC.presence_of_element_located((By.ID, "cookies"))
         )
-        # it doesn't check every product it only gets the entire product section
         self.products = self.driver.find_elements_by_id("product0")
-        print(self.products)
 
         sleep(3)
+
+    def close_pop_ups(self):
+        self.pop_ups = self.driver.find_elements_by_class_name("close")
+        for pop_up in self.pop_ups:
+            try:
+                pop_up.click()
+            except:
+                continue
 
     def check_golden_cookies(self):
         pass
@@ -46,12 +52,12 @@ class Bot:
     def check_upgrades(self):
         levels = ("cookie", "cookies", "million", "billion", "trillion", "quadrillion",
                   "quintillion", "sextillion", "septillion", "octillion")
-        level = levels.index(self.cookie_count.text.split(" ")[1].split("\n")[0])
+        level = levels.index(
+            self.cookie_count.text.split(" ")[1].split("\n")[0])
         amount = float(self.cookie_count.text.split(" ")[0])
 
         for product in self.products:
             element = product.text.split("\n")
-            print(element)
             if len(element) > 1:
                 product_cost = float("".join(element[1].split(",")))
                 if len(element) > 2 and element[2] in levels:
@@ -67,15 +73,24 @@ class Bot:
 
         while True:
             if iteration % 5 == 0:
-                print("checking")
                 self.check_products()
+            if iteration % 50 == 0:
+                self.close_pop_ups()
             self.action.click(self.cookie)
             self.check_upgrades()
 
             iteration += 1
             self.action.perform()
-            sleep(0.00001)
+            sleep(0.000001)
 
     def run(self):
-        self.define_element_variables()
-        self.actions()
+        try:
+            self.define_element_variables()
+            cookie_pop_up = WebDriverWait(self.driver, 60).until(
+                EC.presence_of_element_located((By.LINK_TEXT, "Got it!"))
+            )
+            cookie_pop_up.click()
+            self.actions()
+        except Exception as error:
+            Utils.text_to_speech("An error has occured!")
+            Utils.colored_print(f"ERROR: {error}", color="red")
