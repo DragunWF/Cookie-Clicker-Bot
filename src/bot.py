@@ -14,51 +14,68 @@ from utils import Utils
 class Bot:
     def __init__(self):
         self.driver = webdriver.Chrome(ChromeDriverManager().install())
-        self.url = "https://orteil.dashnet.org/cookieclicker/"
-        self.driver.get(self.url)
+        self.driver.get("https://orteil.dashnet.org/cookieclicker/")
+
+    def define_element_variables(self):
+        self.cookie = WebDriverWait(self.driver, 60).until(
+            EC.presence_of_element_located((By.ID, "bigCookie"))
+        )
+        self.cookie_count = WebDriverWait(self.driver, 60).until(
+            EC.presence_of_element_located((By.ID, "cookies"))
+        )
+        # it doesn't check every product it only gets the entire product section
+        self.products = self.driver.find_elements_by_id("product0")
+        print(self.products)
+
+        sleep(3)
 
     def check_golden_cookies(self):
         pass
 
-    def check_cookies(self):
-        pass
+    def check_products(self):
+        self.products = []
+        index = 0
+        while True:
+            try:
+                self.products.append(
+                    self.driver.find_element_by_id(f"product{index}"))
+                index += 1
+            except:
+                break
 
     def check_upgrades(self):
         levels = ("cookie", "cookies", "million", "billion", "trillion", "quadrillion",
                   "quintillion", "sextillion", "septillion", "octillion")
+        level = levels.index(self.cookie_count.text.split(" ")[1].split("\n")[0])
+        amount = float(self.cookie_count.text.split(" ")[0])
 
-        products = self.driver.find_elements_by_id("products")
-        cookies_count = self.driver.find_element_by_id("cookies")
-        sleep(0.1)
-        level = cookies_count.text.split(" ")[1].split("\n")[0]
-        amount = float(cookies_count.text.split(" ")[0])
-        print(f"{amount} {level}")
-
-        for product in products:
-            if len(product.text):
-                print(product.text)
-                # product_level = levels.index(product.text.split(" ")[1])
-                # product_cost = float(product.text.split(" ")[0])
-                # print(f"Cost: {product_cost} {product_level}")
-                # if amount >= product_cost and level >= product_level:
-                #     product.click()
-
-                # don't forget about splitting commas and joining them then converting them to float
-
-    def click_cookie(self):
-        self.cookie = self.driver.find_element_by_id("bigCookie")
-        self.action.click(self.cookie)
+        for product in self.products:
+            element = product.text.split("\n")
+            print(element)
+            if len(element) > 1:
+                product_cost = float("".join(element[1].split(",")))
+                if len(element) > 2 and element[2] in levels:
+                    product_level = levels.index(element[2])
+                else:
+                    product_level = -1
+                if amount >= product_cost and level >= product_level:
+                    product.click()
 
     def actions(self):
         self.action = ActionChains(self.driver)
+        iteration = 0
+
         while True:
-            self.click_cookie()
+            if iteration % 5 == 0:
+                print("checking")
+                self.check_products()
+            self.action.click(self.cookie)
             self.check_upgrades()
+
+            iteration += 1
             self.action.perform()
-            sleep(0.001)
+            sleep(0.00001)
 
     def run(self):
-        WebDriverWait(self.driver, 60).until(
-            EC.presence_of_element_located((By.ID, "bigCookie"))
-        )
+        self.define_element_variables()
         self.actions()
