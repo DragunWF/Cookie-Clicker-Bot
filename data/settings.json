@@ -1,0 +1,9 @@
+[
+  {
+    "bakery_names": ["Robot", "Catharsis", "Ruthenia", "Starling", ""]
+  },
+  {
+    "playing_from_saves": false,
+    "save_file": "data/saves"
+  }
+]
