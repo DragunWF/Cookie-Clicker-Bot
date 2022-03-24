@@ -1,6 +1,17 @@
 [
   {
-    "bakery_names": ["Robot", "Catharsis", "Ruthenia", "Starling", ""]
+    "bakery_names": [
+      "Robot",
+      "Catharsis",
+      "Ruthenia",
+      "Starling",
+      "Enderalean"
+    ],
+    "controls": {
+      "start_automation": "num 1",
+      "stop_automation": "num 2",
+      "save_game": "num 3"
+    }
   },
   {
     "playing_from_saves": false,
