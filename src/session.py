@@ -13,7 +13,7 @@ class Session:
         self.result = None
 
     def save_session(self):
-        data = json.loads(Path("data/session.json").read_text())
+        data = json.loads(Path("data/sessions.json").read_text())
 
         result = "Success" if self.result else "Error"
         session_data = {"cookies_gained": self.cookies_gained,
