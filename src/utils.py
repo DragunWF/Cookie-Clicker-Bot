@@ -18,6 +18,6 @@ class Utils:
         print(color_func + text)
 
     @staticmethod
-    def tts_print(text, color=None):
-        Utils.colored_print(text, color if color else "white")
+    def tts_print(text, color="white"):
+        Utils.colored_print(text, color)
         Utils.text_to_speech(text)
