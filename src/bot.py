@@ -12,20 +12,33 @@ from utils import Utils
 
 
 class Bot:
-    def __init__(self):
+    def __init__(self, session, settings):
+        self.bakery_names = tuple(settings["bakery_names"])
+        self.session = session
+
         self.driver = webdriver.Chrome(ChromeDriverManager().install())
         self.driver.get("https://orteil.dashnet.org/cookieclicker/")
 
-    def define_element_variables(self):
         self.cookie = WebDriverWait(self.driver, 60).until(
             EC.presence_of_element_located((By.ID, "bigCookie"))
         )
         self.cookie_count = WebDriverWait(self.driver, 60).until(
             EC.presence_of_element_located((By.ID, "cookies"))
         )
-        self.products = self.driver.find_elements_by_id("product0")
+        self.products = None
 
         sleep(3)
+
+    def change_bakery_name(self):
+        WebDriverWait(self.driver, 60).until(
+            EC.presence_of_element_located((By.ID, "bakeryName"))
+        ).click()
+        name_input = WebDriverWait(self.driver, 60).until(
+            EC.presence_of_element_located((By.ID, "bakeryNameInput"))
+        )
+        name_input.clear()
+        name_input.send_keys(random.choice(self.bakery_names))
+        self.driver.find_element_by_id("promptOption0").click()
 
     def close_pop_ups(self):
         self.pop_ups = self.driver.find_elements_by_class_name("close")
@@ -36,7 +49,10 @@ class Bot:
                 continue
 
     def check_golden_cookies(self):
-        pass
+        shimmers = self.driver.find_elements_by_class_name("shimmer")
+        if len(shimmers):
+            for golden_cookie in shimmers:
+                golden_cookie.click()
 
     def check_products(self):
         self.products = []
@@ -74,22 +90,20 @@ class Bot:
         while True:
             if iteration % 5 == 0:
                 self.check_products()
-            if iteration % 50 == 0:
+                self.check_golden_cookies()
                 self.close_pop_ups()
             self.action.click(self.cookie)
             self.check_upgrades()
 
             iteration += 1
             self.action.perform()
-            sleep(0.000001)
 
     def run(self):
         try:
-            self.define_element_variables()
-            cookie_pop_up = WebDriverWait(self.driver, 60).until(
+            WebDriverWait(self.driver, 60).until(
                 EC.presence_of_element_located((By.LINK_TEXT, "Got it!"))
-            )
-            cookie_pop_up.click()
+            ).click()
+            self.change_bakery_name()
             self.actions()
         except Exception as error:
             Utils.text_to_speech("An error has occured!")
