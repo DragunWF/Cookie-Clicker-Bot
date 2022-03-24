@@ -54,7 +54,16 @@ class Bot:
             for golden_cookie in shimmers:
                 golden_cookie.click()
 
-    def check_products(self):
+    def check_store_upgrades(self):
+        upgrades = self.driver.find_elements_by_class_name("enabled")
+        if len(upgrades):
+            for upgrade in upgrades:
+                try:
+                    upgrade.click()
+                except:
+                    continue
+
+    def check_products_upgrades(self):
         self.products = []
         index = 0
         while True:
@@ -86,10 +95,10 @@ class Bot:
     def actions(self):
         self.action = ActionChains(self.driver)
         iteration = 0
-
         while True:
             if iteration % 5 == 0:
-                self.check_products()
+                self.check_store_upgrades()
+                self.check_products_upgrades()
                 self.check_golden_cookies()
                 self.close_pop_ups()
             self.action.click(self.cookie)
