@@ -1,4 +1,5 @@
 import random
+import os
 from time import sleep
 
 from selenium import webdriver
@@ -18,6 +19,7 @@ class Bot:
 
         self.driver = webdriver.Chrome(ChromeDriverManager().install())
         self.driver.get("https://orteil.dashnet.org/cookieclicker/")
+        self.driver.maximize_window()
 
         self.cookie = WebDriverWait(self.driver, 60).until(
             EC.presence_of_element_located((By.ID, "bigCookie"))
@@ -50,13 +52,13 @@ class Bot:
 
     def check_golden_cookies(self):
         shimmers = self.driver.find_elements_by_class_name("shimmer")
-        if len(shimmers):
+        if shimmers:
             for golden_cookie in shimmers:
                 golden_cookie.click()
 
     def check_store_upgrades(self):
         upgrades = self.driver.find_elements_by_class_name("enabled")
-        if len(upgrades):
+        if upgrades:
             for upgrade in upgrades:
                 try:
                     upgrade.click()
@@ -68,9 +70,9 @@ class Bot:
         index = 0
         while True:
             try:
-                self.products.append(
-                    self.driver.find_element_by_id(f"product{index}"))
+                product = self.driver.find_element_by_id(f"product{index}")
                 index += 1
+                self.products.append(product)
             except:
                 break
 
