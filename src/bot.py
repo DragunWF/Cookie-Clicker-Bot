@@ -1,5 +1,5 @@
+import asyncio
 import random
-import os
 from time import sleep
 
 from selenium import webdriver
@@ -29,7 +29,14 @@ class Bot:
         )
         self.products = None
 
+        Utils.tts_print("Bot has been initialized", color="green")
         sleep(3)
+
+    def save_game(self):
+        pass
+
+    def load_save_file(self):
+        pass
 
     def change_bakery_name(self):
         WebDriverWait(self.driver, 60).until(
@@ -43,7 +50,7 @@ class Bot:
         self.driver.find_element_by_id("promptOption0").click()
 
     def close_pop_ups(self):
-        self.pop_ups = self.driver.find_elements_by_class_name("close")
+        self.pop_ups = tuple(self.driver.find_elements_by_class_name("close"))
         for pop_up in self.pop_ups:
             try:
                 pop_up.click()
@@ -51,10 +58,13 @@ class Bot:
                 continue
 
     def check_golden_cookies(self):
-        shimmers = self.driver.find_elements_by_class_name("shimmer")
+        shimmers = tuple(self.driver.find_elements_by_class_name("shimmer"))
         if shimmers:
             for golden_cookie in shimmers:
-                golden_cookie.click()
+                try:
+                    golden_cookie.click()
+                except:
+                    continue
 
     def check_store_upgrades(self):
         upgrades = self.driver.find_elements_by_class_name("enabled")
@@ -79,16 +89,18 @@ class Bot:
     def check_upgrades(self):
         levels = ("cookie", "cookies", "million", "billion", "trillion", "quadrillion",
                   "quintillion", "sextillion", "septillion", "octillion")
-        level = levels.index(
-            self.cookie_count.text.split(" ")[1].split("\n")[0])
-        amount = float(self.cookie_count.text.split(" ")[0])
+        cookie_text = self.cookie_count.text.split(" ")
+        level = levels.index(cookie_text[1].split("\n")[0])
+        amount = float("".join(cookie_text[0].split(",")))
 
         for product in self.products:
             element = product.text.split("\n")
             if len(element) > 1:
-                product_cost = float("".join(element[1].split(",")))
-                if len(element) > 2 and element[2] in levels:
-                    product_level = levels.index(element[2])
+                product_text = element[1].split(" ")
+                product_cost = float("".join(product_text[0].split(",")))
+
+                if len(product_text) >= 2 and product_text[1] in levels:
+                    product_level = levels.index(product_text[1])
                 else:
                     product_level = -1
                 if amount >= product_cost and level >= product_level:
@@ -110,12 +122,12 @@ class Bot:
             self.action.perform()
 
     def run(self):
-        try:
-            WebDriverWait(self.driver, 60).until(
-                EC.presence_of_element_located((By.LINK_TEXT, "Got it!"))
-            ).click()
-            self.change_bakery_name()
-            self.actions()
-        except Exception as error:
-            Utils.text_to_speech("An error has occured!")
-            Utils.colored_print(f"ERROR: {error}", color="red")
+        # try:
+        WebDriverWait(self.driver, 60).until(
+            EC.presence_of_element_located((By.LINK_TEXT, "Got it!"))
+        ).click()
+        self.change_bakery_name()
+        self.actions()
+        # except Exception as error:
+        #     Utils.text_to_speech("An error has occured!")
+        #     Utils.colored_print(f"ERROR: {error}", color="red")
