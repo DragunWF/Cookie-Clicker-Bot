@@ -7,7 +7,9 @@ class Session:
         self.cookies_from_start = 0
         self.cookies_at_end = 0
         self.cookies_gained = 0
-        self.upgrades_bought = 0
+        self.product_upgrades_bought = 0
+        self.store_upgrades_bought = 0
+        self.golden_cookies_clicked = 0
 
         self.save_file_loaded = None
         self.result = None
@@ -19,7 +21,9 @@ class Session:
         session_data = {"cookies_gained": self.cookies_gained,
                         "cookies_from_start": self.cookies_from_start,
                         "cookies_at_end": self.cookies_at_end,
-                        "upgrades_bought": self.upgrades_bought,
+                        "product_upgrades_bought": self.product_upgrades_bought,
+                        "store_upgrades_bought": self.store_upgrades_bought,
+                        "golden_cookies_clicked": self.golden_cookies_clicked,
                         "save_file_loaded": self.save_file_loaded,
                         "end_result": result}
         data.append(session_data)
