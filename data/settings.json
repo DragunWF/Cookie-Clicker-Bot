@@ -1,6 +1,6 @@
 [
   {
-    "controller": true,
+    "controlled": true,
     "bakery_names": [
       "Robot",
       "Catharsis",
@@ -12,11 +12,11 @@
     "controls": {
       "start_automation": "num 1",
       "stop_automation": "num 2",
-      "save_game": "num 3"
+      "quit_game": "num 3"
     },
     "saves": {
       "load_save_file": false,
-      "save_file": "data/saves"
+      "location": "data/saves/EnderaleanBakery.txt"
     }
   }
 ]
