@@ -25,8 +25,15 @@ class Session:
 
     def save_session(self):
         data = json.loads(Path("data/sessions.json").read_text())
+
+        save_file_data = {"saves": {"loaded": self.save_file_loaded, "file_location": None}}
+        if self.save_file_loaded:
+            save_settings = json.loads(
+                Path("data/settings.json").read_text())[0]["saves"]
+            save_file_data["saves"]["file_location"] = save_settings["location"]
+
         session_data = {"session_count": len(data) + 1,
-                        "save_file_loaded": self.save_file_loaded,
+                        "save_file": save_file_data,
                         "stats_from_start": self.start_data,
                         "stats_at_end": self.end_data}
         data.append(session_data)
