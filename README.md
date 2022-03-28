@@ -10,7 +10,7 @@
 
 ## Description
 
-Hello! This is a Python Bot powered with Selenium. A bot that automates cookie clicker
+Hello! This is a Python bot powered with Selenium. A bot that automates cookie clicker
 for you.
 
 ## Functionalities
@@ -28,7 +28,8 @@ for you.
 - Just like every bot with Selenium, you got to make sure your
   [chrome webdriver](https://sites.google.com/a/chromium.org/chromedriver/downloads)
   is installed and have downloaded the correct webdriver for your version of chrome.
-- **You can immediately start by just running** `main.py` **to start the bot.**
+- Given if you have the prerequisites stated above, **you can immediately start by just running**
+  `main.py` **to start the bot.**
 
 ```json
 [
@@ -68,9 +69,9 @@ for you.
 
 ### Controls
 
-- Numpad 1 -> to turn on automation
-- Numpad 2 -> to turn off automation
-- Numpad 3 -> to quit the game. It also saves your game right before it exits.
+- **Numpad 1** -> To turn on automation
+- **Numpad 2** -> To turn off automation
+- **Numpad 3** -> To quit the game. It also saves your game right before it exits.
 
 **Note:** You can change these controls in `data/settings.json` at the `"controls"`
 property.
