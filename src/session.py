@@ -4,28 +4,32 @@ from pathlib import Path
 
 class Session:
     def __init__(self):
-        self.cookies_from_start = 0
-        self.cookies_at_end = 0
-        self.cookies_gained = 0
-        self.product_upgrades_bought = 0
-        self.store_upgrades_bought = 0
-        self.golden_cookies_clicked = 0
-
-        self.save_file_loaded = None
+        self.start_data = {}
+        self.end_data = {}
         self.result = None
+
+    def save_session_stats(self, data, session_ending):
+        session_stats = {}
+        for index in range(1, len(data) - 2):
+            if index <= 6 and index % 2 == 0:
+                session_stats[data[index - 1]] = data[index]
+                continue
+            stat_data = [item.strip() for item in data[index].split(":")]
+            session_stats[stat_data[0]] = stat_data[1]
+
+        if not session_ending:
+            self.start_data = session_stats
+        else:
+            self.end_data = session_stats
 
     def save_session(self):
         data = json.loads(Path("data/sessions.json").read_text())
 
-        result = "Success" if self.result else "Error"
-        session_data = {"cookies_gained": self.cookies_gained,
-                        "cookies_from_start": self.cookies_from_start,
-                        "cookies_at_end": self.cookies_at_end,
-                        "product_upgrades_bought": self.product_upgrades_bought,
-                        "store_upgrades_bought": self.store_upgrades_bought,
-                        "golden_cookies_clicked": self.golden_cookies_clicked,
-                        "save_file_loaded": self.save_file_loaded,
-                        "end_result": result}
+        result = "Success" if self.result else "Interuptted"
+        session_data = {"session_count": len(data),
+                        "stats_from_start": self.start_data,
+                        "stats_at_end": self.end_data,
+                        "session_result": result}
         data.append(session_data)
 
         formatted = json.dumps(data, sort_keys=False,
