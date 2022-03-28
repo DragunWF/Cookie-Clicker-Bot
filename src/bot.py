@@ -1,4 +1,3 @@
-import asyncio
 import random
 from time import sleep
 
@@ -159,7 +158,7 @@ class Bot:
                 self.change_bakery_name()
             else:
                 self.load_save_file()
-                self.grab_stats(False)
+            self.grab_stats(False)
             if not self.controlled:
                 while True:
                     await self.actions()
