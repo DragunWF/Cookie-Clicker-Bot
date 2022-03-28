@@ -26,8 +26,8 @@ for you.
 ## Setup
 
 - Just like every bot with Selenium, you got to make sure your
-  [chrome webdriver](https://sites.google.com/a/chromium.org/chromedriver/downloads)
-  is installed and have downloaded the correct webdriver for your version of chrome.
+  [chrome web driver](https://sites.google.com/a/chromium.org/chromedriver/downloads)
+  is installed and have downloaded the correct web driver for your version of chrome.
 - Given if you have the prerequisites stated above, **you can immediately start by just running**
   `main.py` **to start the bot.**
 
@@ -59,9 +59,15 @@ for you.
 - If you want to change the bot's settings you can either do it at the start of the program
   by inputting `n` where my program asks you if you want to use the default settings or you
   can change it by directly editing the values at `data/settings.json`.
+- If you want to load a save file once the bot starts, you can do so going to `data/settings.json`
+  then setting `"load_save_file"`to `true` and by specifying the file path to your save file
+  in `"location"` at `"saves"`.
 
 ## Details
 
+- The `"bakery_names"` property in `data/settings.json` is an array of strings used for choosing
+  a random bakery name on startup. If you want it to only choose one name, you can remove all other
+  elements of the array and only add one string with your desired bakery name in it.
 - I highly recommend you leave `"controlled"` set as `true` but if you really don't want to
   have any controls, you can set `"controlled"` in `data/settings.json` to `false`. One warning
   though, without the controls the bot doesn't automatically save your game so you have to
