@@ -11,7 +11,7 @@ from utils import Utils
 
 
 class Bot:
-    def __init__(self, session, settings):
+    def __init__(self, session: object, settings: dict):
         self.controlled = settings["controlled"]
         self.bakery_names = tuple(settings["bakery_names"])
         self.session = session
@@ -37,7 +37,7 @@ class Bot:
         Utils.tts_print("Bot has been initialized", color="green")
         sleep(1)
 
-    def grab_stats(self, session_ending):
+    def grab_stats(self, session_ending: bool):
         stats_button = WebDriverWait(self.driver, 60).until(
             EC.presence_of_element_located((By.ID, "statsButton"))
         )

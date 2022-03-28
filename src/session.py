@@ -8,7 +8,7 @@ class Session:
         self.end_data = {}
         self.save_file_loaded = False
 
-    def save_session_stats(self, data, session_ending):
+    def save_session_stats(self, data: list, session_ending: bool):
         session_stats = {}
         for index in range(1, len(data) - 2):
             if index <= 6 and index % 2 == 0:

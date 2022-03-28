@@ -23,7 +23,7 @@ def user_choose(question: str) -> bool:
         Utils.colored_print("Invalid option!", color="red")
 
 
-def configuration(settings):
+def configuration(settings: dict) -> dict:
     Utils.colored_print("Warning: Invalid configuration will result in an error!", color="red")
     settings["controlled"] = user_choose("Do you want the bot's automation to be controlled?")
 

@@ -7,7 +7,7 @@ from utils import Utils
 
 
 class BotController(Bot):
-    def __init__(self, session, settings):
+    def __init__(self, session: object, settings: dict):
         super().__init__(session, settings)
         self.automation_running = True
         self.controls = settings["controls"]
@@ -22,15 +22,13 @@ class BotController(Bot):
                     self.automation_running = True
                     Utils.tts_print("Automation on", color="green")
                 else:
-                    Utils.tts_print("Automation is already on",
-                                    color="red")
+                    Utils.tts_print("Automation is already on", color="red")
             elif keyboard.is_pressed(self.controls["stop_automation"]):
                 if self.automation_running:
                     self.automation_running = False
                     Utils.tts_print("Automation off", color="yellow")
                 else:
-                    Utils.tts_print("Automation is already off",
-                                    color="red")
+                    Utils.tts_print("Automation is already off", color="red")
             elif keyboard.is_pressed(self.controls["quit_game"]):
                 Utils.tts_print("Stopping automation", color="yellow")
                 self.automation_running = False
