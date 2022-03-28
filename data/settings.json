@@ -1,20 +1,22 @@
 [
   {
+    "controller": true,
     "bakery_names": [
       "Robot",
       "Catharsis",
       "Ruthenia",
       "Starling",
-      "Enderalean"
+      "Enderalean",
+      "Nether"
     ],
     "controls": {
       "start_automation": "num 1",
       "stop_automation": "num 2",
       "save_game": "num 3"
+    },
+    "saves": {
+      "load_save_file": false,
+      "save_file": "data/saves"
     }
-  },
-  {
-    "playing_from_saves": false,
-    "save_file": "data/saves"
   }
 ]
