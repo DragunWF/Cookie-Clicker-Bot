@@ -17,7 +17,9 @@ class Bot:
         self.bakery_names = tuple(settings["bakery_names"])
         self.session = session
 
-        if settings["saves"]["load_save_file"]:
+        self.playing_from_save_file = settings["saves"]["load_save_file"]
+        self.session.save_file_loaded = self.playing_from_save_file
+        if self.playing_from_save_file:
             self.save_file_location = settings["save_file_location"]
 
         self.driver = webdriver.Chrome(ChromeDriverManager().install())
@@ -50,7 +52,14 @@ class Bot:
         stats_button.click()
 
     def save_game(self):
-        pass
+        options_button = WebDriverWait(self.driver, 60).until(
+            EC.presence_of_element_located((By.ID, "prefsButton"))
+        )
+        options_button.click()
+        WebDriverWait(self.driver, 60).until(
+            EC.presence_of_element_located((By.LINK_TEXT, "Save to file"))
+        ).click()
+        options_button.click()
 
     def load_save_file(self):
         options_button = WebDriverWait(self.driver, 60).until(
@@ -61,7 +70,6 @@ class Bot:
         WebDriverWait(self.driver, 60).until(
             EC.presence_of_element_located((By.ID, "FileLoadInput"))
         ).send_keys(self.save_file_location)
-
         options_button.click()
 
     def change_bakery_name(self):
@@ -147,15 +155,14 @@ class Bot:
             WebDriverWait(self.driver, 60).until(
                 EC.presence_of_element_located((By.LINK_TEXT, "Got it!"))
             ).click()
-            self.grab_stats(False)
-            self.change_bakery_name()
+            if not self.playing_from_save_file:
+                self.change_bakery_name()
+            else:
+                self.load_save_file()
+                self.grab_stats(False)
             if not self.controlled:
                 while True:
                     await self.actions()
         except Exception as error:
             Utils.text_to_speech("An error has occured!")
             Utils.colored_print(f"ERROR: {error}", color="red")
-
-        if not self.controlled:
-            self.grab_stats(True)
-            self.session.save_session()
