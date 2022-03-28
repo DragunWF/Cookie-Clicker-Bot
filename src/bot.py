@@ -99,7 +99,6 @@ class Bot:
             for upgrade in upgrades:
                 try:
                     upgrade.click()
-                    self.session.store_upgrades_bought += 1
                 except:
                     continue
 
@@ -133,7 +132,6 @@ class Bot:
                     product_level = -1
                 if amount >= product_cost and level >= product_level:
                     product.click()
-                    self.session.product_upgrades_bought += 1
 
     def actions(self):
         # self.action = ActionChains(self.driver)
@@ -159,7 +157,7 @@ class Bot:
             self.change_bakery_name()
             self.actions()
         except Exception as error:
-            self.session = False
+            self.session.result = False
             Utils.text_to_speech("An error has occured!")
             Utils.colored_print(f"ERROR: {error}", color="red")
 
