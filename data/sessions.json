@@ -1,10 +1,72 @@
 [
   {
-    "cookies_gained": 0,
-    "cookies_from_start": 0,
-    "cookies_at_end": 0,
-    "upgrades_bought": 0,
-    "save_file_loaded": false,
-    "end_result": "Sample"
+    "session_count": 1,
+    "save_file": {
+      "saves": {
+        "loaded": false,
+        "file_location": null
+      }
+    },
+    "stats_from_start": {
+      "Cookies in bank": "0",
+      "Cookies baked (this ascension)": "0",
+      "Cookies baked (all time)": "0",
+      "Run started": "6 seconds ago",
+      "Buildings owned": "0",
+      "Cookies per second": "0 (multiplier",
+      "Raw cookies per second": "0 (highest this ascension",
+      "Cookies per click": "1",
+      "Cookie clicks": "0",
+      "Hand-made cookies": "0",
+      "Golden cookie clicks": "0 (all time"
+    },
+    "stats_at_end": {
+      "Cookies in bank": "12",
+      "Cookies baked (this ascension)": "146",
+      "Cookies baked (all time)": "146",
+      "Run started": "32 seconds ago",
+      "Buildings owned": "6",
+      "Cookies per second": "0.6 (multiplier",
+      "Raw cookies per second": "0.6 (highest this ascension",
+      "Cookies per click": "1",
+      "Cookie clicks": "138",
+      "Hand-made cookies": "138",
+      "Golden cookie clicks": "0 (all time"
+    }
+  },
+  {
+    "session_count": 2,
+    "save_file": {
+      "saves": {
+        "loaded": true,
+        "file_location": "data/saves/EnderaleanBakery.txt"
+      }
+    },
+    "stats_from_start": {
+      "Cookies in bank": "56,609",
+      "Cookies baked (this ascension)": "21.839 million",
+      "Cookies baked (all time)": "21.839 million",
+      "Run started": "2 days, 22 hours ago",
+      "Buildings owned": "225",
+      "Cookies per second": "12,585 (multiplier",
+      "Raw cookies per second": "12,585 (highest this ascension",
+      "Cookies per click": "148.8",
+      "Cookie clicks": "8,959",
+      "Hand-made cookies": "565,254",
+      "Golden cookie clicks": "10 (all time"
+    },
+    "stats_at_end": {
+      "Cookies in bank": "373,425",
+      "Cookies baked (this ascension)": "22.155 million",
+      "Cookies baked (all time)": "22.155 million",
+      "Run started": "2 days, 22 hours ago",
+      "Buildings owned": "225",
+      "Cookies per second": "12,585 (multiplier",
+      "Raw cookies per second": "12,585 (highest this ascension",
+      "Cookies per click": "148.8",
+      "Cookie clicks": "9,061",
+      "Hand-made cookies": "580,428",
+      "Golden cookie clicks": "10 (all time"
+    }
   }
 ]
