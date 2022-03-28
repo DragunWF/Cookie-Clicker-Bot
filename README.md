@@ -11,7 +11,7 @@
 ## Description
 
 Hello! This is a Python bot powered with Selenium. A bot that automates cookie clicker
-for you.
+for your desires. Have fun!
 
 ## Functionalities
 
@@ -72,6 +72,7 @@ for you.
   have any controls, you can set `"controlled"` in `data/settings.json` to `false`. One warning
   though, without the controls the bot doesn't automatically save your game so you have to
   do it manually in the game.
+- For the controls you have to hold the key for it to trigger instead of pressing it lightly.
 
 ### Controls
 
@@ -84,5 +85,5 @@ property.
 
 ## Contact
 
-If you want to contact me about suggestions or problems with this project, you
+If you want to contact me about suggestions or bugs to report with this project, you
 can contact me via discord. My discord tag is **DragonWF#9321**.
