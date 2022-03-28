@@ -6,7 +6,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.action_chains import ActionChains
+# from selenium.webdriver.common.action_chains import ActionChains
 from webdriver_manager.chrome import ChromeDriverManager
 
 from utils import Utils
@@ -14,8 +14,12 @@ from utils import Utils
 
 class Bot:
     def __init__(self, session, settings):
+        self.controlled = settings["controlled"]
         self.bakery_names = tuple(settings["bakery_names"])
         self.session = session
+
+        if settings["saves"]["load_save_file"]:
+            self.save_file_location = settings["save_file_location"]
 
         self.driver = webdriver.Chrome(ChromeDriverManager().install())
         self.driver.get("https://orteil.dashnet.org/cookieclicker/")
@@ -32,11 +36,33 @@ class Bot:
         Utils.tts_print("Bot has been initialized", color="green")
         sleep(3)
 
+    def grab_stats(self, session_ending):
+        stats_button = WebDriverWait(self.driver, 60).until(
+            EC.presence_of_element_located((By.ID, "statsButton"))
+        )
+        stats_button.click()
+
+        stats = WebDriverWait(self.driver, 60).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "subsection"))
+        )
+        self.session.save_session_stats(stats.text.split("\n"), session_ending)
+
+        stats_button.click()
+
     def save_game(self):
         pass
 
     def load_save_file(self):
-        pass
+        options_button = WebDriverWait(self.driver, 60).until(
+            EC.presence_of_element_located((By.ID, "prefsButton"))
+        )
+        options_button.click()
+
+        WebDriverWait(self.driver, 60).until(
+            EC.presence_of_element_located((By.ID, "FileLoadInput"))
+        ).send_keys(self.save_file_location)
+
+        options_button.click()
 
     def change_bakery_name(self):
         WebDriverWait(self.driver, 60).until(
@@ -63,6 +89,7 @@ class Bot:
             for golden_cookie in shimmers:
                 try:
                     golden_cookie.click()
+                    self.session.golden_cookies_clicked += 1
                 except:
                     continue
 
@@ -72,6 +99,7 @@ class Bot:
             for upgrade in upgrades:
                 try:
                     upgrade.click()
+                    self.session.store_upgrades_bought += 1
                 except:
                     continue
 
@@ -105,9 +133,10 @@ class Bot:
                     product_level = -1
                 if amount >= product_cost and level >= product_level:
                     product.click()
+                    self.session.product_upgrades_bought += 1
 
     def actions(self):
-        self.action = ActionChains(self.driver)
+        # self.action = ActionChains(self.driver)
         iteration = 0
         while True:
             if iteration % 5 == 0:
@@ -115,19 +144,24 @@ class Bot:
                 self.check_products_upgrades()
                 self.check_golden_cookies()
                 self.close_pop_ups()
-            self.action.click(self.cookie)
+            self.cookie.click()
             self.check_upgrades()
 
             iteration += 1
-            self.action.perform()
+            # self.action.perform()
 
     def run(self):
-        # try:
-        WebDriverWait(self.driver, 60).until(
-            EC.presence_of_element_located((By.LINK_TEXT, "Got it!"))
-        ).click()
-        self.change_bakery_name()
-        self.actions()
-        # except Exception as error:
-        #     Utils.text_to_speech("An error has occured!")
-        #     Utils.colored_print(f"ERROR: {error}", color="red")
+        try:
+            WebDriverWait(self.driver, 60).until(
+                EC.presence_of_element_located((By.LINK_TEXT, "Got it!"))
+            ).click()
+            self.grab_stats(False)
+            self.change_bakery_name()
+            self.actions()
+        except Exception as error:
+            self.session = False
+            Utils.text_to_speech("An error has occured!")
+            Utils.colored_print(f"ERROR: {error}", color="red")
+
+        self.grab_stats(True)
+        self.session.save_session()
