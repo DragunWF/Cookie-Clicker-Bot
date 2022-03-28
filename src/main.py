@@ -26,12 +26,14 @@ def configuration():
 
 
 def main():
-    root_dir = os.path.dirname(os.path.abspath(__file__))
-    while "\\" in root_dir:
-        root_dir = root_dir.replace("\\", "/")
+    root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    while "\\" in root:
+        root = root.replace("\\", "/")
+    root = "".join([i if i != ":" else f"{i}/" for i in root])
+    root = f"{root[0].upper()}{root[1:]}"
 
     settings = json.loads(Path("data/settings.json").read_text())[0]
-    settings["save_file_location"] = f"{root_dir}/{settings['saves']['location']}"
+    settings["save_file_location"] = f"{root}/{settings['saves']['location']}"
 
     session = Session()
     Utils.tts_print("Session has been created!", color="green")
