@@ -68,5 +68,40 @@
       "Hand-made cookies": "580,428",
       "Golden cookie clicks": "10 (all time"
     }
+  },
+  {
+    "session_count": 3,
+    "save_file": {
+      "saves": {
+        "loaded": true,
+        "file_location": "data/saves/EnderaleanBakery.txt"
+      }
+    },
+    "stats_from_start": {
+      "Cookies in bank": "57,029",
+      "Cookies baked (this ascension)": "21.839 million",
+      "Cookies baked (all time)": "21.839 million",
+      "Run started": "3 days, 1 hour ago",
+      "Buildings owned": "225",
+      "Cookies per second": "12,585 (multiplier",
+      "Raw cookies per second": "12,585 (highest this ascension",
+      "Cookies per click": "148.8",
+      "Cookie clicks": "8,959",
+      "Hand-made cookies": "565,254",
+      "Golden cookie clicks": "10 (all time"
+    },
+    "stats_at_end": {
+      "Cookies in bank": "779,410",
+      "Cookies baked (this ascension)": "826.816 million",
+      "Cookies baked (all time)": "826.816 million",
+      "Run started": "3 days, 3 hours ago",
+      "Buildings owned": "364",
+      "Cookies per second": "186,710 (multiplier",
+      "Raw cookies per second": "186,710 (highest this ascension",
+      "Cookies per click": "3,874",
+      "Cookie clicks": "38,010",
+      "Hand-made cookies": "46.916 million",
+      "Golden cookie clicks": "30 (all time"
+    }
   }
 ]
