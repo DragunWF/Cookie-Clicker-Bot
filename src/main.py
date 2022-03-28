@@ -27,6 +27,16 @@ def configuration(settings: dict) -> dict:
     Utils.colored_print("Warning: Invalid configuration will result in an error!", color="red")
     settings["controlled"] = user_choose("Do you want the bot's automation to be controlled?")
 
+    if settings["controlled"]:
+        default_controls = user_choose("Do you want to use the default controls?")
+        if not default_controls:
+            start_key = input(green + "Key for starting automation" + white).strip().lower()
+            stop_key = input(yellow + "Key for stopping automation" + white).strip().lower()
+            quit_key = input(cyan + "Key for quitting/turning off the bot" + white).strip().lower()
+            settings["controls"]["start_automation"] = start_key
+            settings["controls"]["stop_automation"] = stop_key
+            settings["controls"]["quit_game"] = quit_key
+            
     load_save = user_choose("Do you want to load a save file?")
     if load_save:
         Utils.colored_print("Specify a valid save file path from this project's main root directory",
@@ -40,16 +50,6 @@ def configuration(settings: dict) -> dict:
         if randomized_name:
             bakery_name = input(yellow + "Your bakery name: " + white).strip()
             settings["bakery_names"] = [bakery_name]
-
-    if settings["controlled"]:
-        default_controls = user_choose("Do you want to use the default controls?")
-        if not default_controls:
-            start_key = input(green + "Key for starting automation" + white).strip().lower()
-            stop_key = input(yellow + "Key for stopping automation" + white).strip().lower()
-            quit_key = input(cyan + "Key for quitting/turning off the bot" + white).strip().lower()
-            settings["controls"]["start_automation"] = start_key
-            settings["controls"]["stop_automation"] = stop_key
-            settings["controls"]["quit_game"] = quit_key
 
     return settings
 
