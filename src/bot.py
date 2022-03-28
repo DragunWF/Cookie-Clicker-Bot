@@ -6,7 +6,6 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-# from selenium.webdriver.common.action_chains import ActionChains
 from webdriver_manager.chrome import ChromeDriverManager
 
 from utils import Utils
@@ -32,9 +31,10 @@ class Bot:
             EC.presence_of_element_located((By.ID, "cookies"))
         )
         self.products = None
+        self.iteration = 0
 
         Utils.tts_print("Bot has been initialized", color="green")
-        sleep(3)
+        sleep(1)
 
     def grab_stats(self, session_ending):
         stats_button = WebDriverWait(self.driver, 60).until(
@@ -103,8 +103,7 @@ class Bot:
                     continue
 
     def check_products_upgrades(self):
-        self.products = []
-        index = 0
+        self.products, index = [], 0
         while True:
             try:
                 product = self.driver.find_element_by_id(f"product{index}")
@@ -133,33 +132,30 @@ class Bot:
                 if amount >= product_cost and level >= product_level:
                     product.click()
 
-    def actions(self):
-        # self.action = ActionChains(self.driver)
-        iteration = 0
-        while True:
-            if iteration % 5 == 0:
-                self.check_store_upgrades()
-                self.check_products_upgrades()
-                self.check_golden_cookies()
-                self.close_pop_ups()
-            self.cookie.click()
-            self.check_upgrades()
+    async def actions(self):
+        if self.iteration % 5 == 0:
+            self.check_store_upgrades()
+            self.check_products_upgrades()
+            self.check_golden_cookies()
+            self.close_pop_ups()
+        self.cookie.click()
+        self.check_upgrades()
+        self.iteration += 1
 
-            iteration += 1
-            # self.action.perform()
-
-    def run(self):
+    async def run(self):
         try:
             WebDriverWait(self.driver, 60).until(
                 EC.presence_of_element_located((By.LINK_TEXT, "Got it!"))
             ).click()
             self.grab_stats(False)
             self.change_bakery_name()
-            self.actions()
+            if not self.controlled:
+                while True:
+                    await self.actions()
         except Exception as error:
-            self.session.result = False
             Utils.text_to_speech("An error has occured!")
             Utils.colored_print(f"ERROR: {error}", color="red")
 
-        self.grab_stats(True)
-        self.session.save_session()
+        if not self.controlled:
+            self.grab_stats(True)
+            self.session.save_session()
