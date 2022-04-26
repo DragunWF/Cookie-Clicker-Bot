@@ -12,96 +12,95 @@ from utils import Utils
 
 class Bot:
     def __init__(self, session: object, settings: dict):
-        self.controlled = settings["controlled"]
-        self.bakery_names = tuple(settings["bakery_names"])
-        self.session = session
+        self.__controlled = settings["controlled"]
+        self.__bakery_names = tuple(settings["bakery_names"])
+        self.__session = session
 
-        self.playing_from_save_file = settings["saves"]["load_save_file"]
-        self.session.save_file_loaded = self.playing_from_save_file
-        if self.playing_from_save_file:
-            self.save_file_location = settings["save_file_location"]
+        self.__playing_from_save_file = settings["saves"]["load_save_file"]
+        self.__session.save_file_loaded = self.__playing_from_save_file
+        if self.__playing_from_save_file:
+            self.__save_file_location = settings["save_file_location"]
 
-        self.driver = webdriver.Chrome(ChromeDriverManager().install())
-        self.driver.get("https://orteil.dashnet.org/cookieclicker/")
-        self.driver.maximize_window()
+        self.__driver = webdriver.Chrome(ChromeDriverManager().install())
+        self.__driver.get("https://orteil.dashnet.org/cookieclicker/")
+        self.__driver.maximize_window()
 
-        self.cookie = WebDriverWait(self.driver, 60).until(
+        self.__cookie = WebDriverWait(self.__driver, 60).until(
             EC.presence_of_element_located((By.ID, "bigCookie"))
         )
-        self.cookie_count = WebDriverWait(self.driver, 60).until(
+        self.__cookie_count = WebDriverWait(self.__driver, 60).until(
             EC.presence_of_element_located((By.ID, "cookies"))
         )
-        self.products = None
-        self.iteration = 0
+        self.__products = None
+        self.__iteration = 0
 
         Utils.tts_print("Bot has been initialized", color="green")
         sleep(1)
 
     def grab_stats(self, session_ending: bool):
-        stats_button = WebDriverWait(self.driver, 60).until(
+        stats_button = WebDriverWait(self.__driver, 60).until(
             EC.presence_of_element_located((By.ID, "statsButton"))
         )
         stats_button.click()
 
-        stats = WebDriverWait(self.driver, 60).until(
+        stats = WebDriverWait(self.__driver, 60).until(
             EC.presence_of_element_located((By.CLASS_NAME, "subsection"))
         )
-        self.session.save_session_stats(stats.text.split("\n"), session_ending)
+        self.__session.save_session_stats(stats.text.split("\n"), session_ending)
 
         stats_button.click()
 
     def save_game(self):
-        options_button = WebDriverWait(self.driver, 60).until(
+        options_button = WebDriverWait(self.__driver, 60).until(
             EC.presence_of_element_located((By.ID, "prefsButton"))
         )
         options_button.click()
-        WebDriverWait(self.driver, 60).until(
+        WebDriverWait(self.__driver, 60).until(
             EC.presence_of_element_located((By.LINK_TEXT, "Save to file"))
         ).click()
         options_button.click()
 
-    def load_save_file(self):
-        options_button = WebDriverWait(self.driver, 60).until(
+    def __load_save_file(self):
+        options_button = WebDriverWait(self.__driver, 60).until(
             EC.presence_of_element_located((By.ID, "prefsButton"))
         )
         options_button.click()
 
-        WebDriverWait(self.driver, 60).until(
+        WebDriverWait(self.__driver, 60).until(
             EC.presence_of_element_located((By.ID, "FileLoadInput"))
-        ).send_keys(self.save_file_location)
+        ).send_keys(self.__save_file_location)
         options_button.click()
 
-    def change_bakery_name(self):
-        WebDriverWait(self.driver, 60).until(
+    def __change_bakery_name(self):
+        WebDriverWait(self.__driver, 60).until(
             EC.presence_of_element_located((By.ID, "bakeryName"))
         ).click()
-        name_input = WebDriverWait(self.driver, 60).until(
+        name_input = WebDriverWait(self.__driver, 60).until(
             EC.presence_of_element_located((By.ID, "bakeryNameInput"))
         )
         name_input.clear()
-        name_input.send_keys(random.choice(self.bakery_names))
-        self.driver.find_element_by_id("promptOption0").click()
+        name_input.send_keys(random.choice(self.__bakery_names))
+        self.__driver.find_element_by_id("promptOption0").click()
 
-    def close_pop_ups(self):
-        self.pop_ups = tuple(self.driver.find_elements_by_class_name("close"))
+    def __close_pop_ups(self):
+        self.pop_ups = tuple(self.__driver.find_elements_by_class_name("close"))
         for pop_up in self.pop_ups:
             try:
                 pop_up.click()
             except:
                 continue
 
-    def check_golden_cookies(self):
-        shimmers = tuple(self.driver.find_elements_by_class_name("shimmer"))
+    def __check_golden_cookies(self):
+        shimmers = tuple(self.__driver.find_elements_by_class_name("shimmer"))
         if shimmers:
             for golden_cookie in shimmers:
                 try:
                     golden_cookie.click()
-                    self.session.golden_cookies_clicked += 1
                 except:
                     continue
 
-    def check_store_upgrades(self):
-        upgrades = self.driver.find_elements_by_class_name("enabled")
+    def __check_store_upgrades(self):
+        upgrades = self.__driver.find_elements_by_class_name("enabled")
         if upgrades:
             for upgrade in upgrades:
                 try:
@@ -109,24 +108,24 @@ class Bot:
                 except:
                     continue
 
-    def check_products_upgrades(self):
-        self.products, index = [], 0
+    def __check_products_upgrades(self):
+        self.__products, index = [], 0
         while True:
             try:
-                product = self.driver.find_element_by_id(f"product{index}")
+                product = self.__driver.find_element_by_id(f"product{index}")
                 index += 1
-                self.products.append(product)
+                self.__products.append(product)
             except:
                 break
 
-    def check_upgrades(self):
+    def __check_upgrades(self):
         levels = ("cookie", "cookies", "million", "billion", "trillion", "quadrillion",
                   "quintillion", "sextillion", "septillion", "octillion")
-        cookie_text = self.cookie_count.text.split(" ")
+        cookie_text = self.__cookie_count.text.split(" ")
         level = levels.index(cookie_text[1].split("\n")[0])
         amount = float("".join(cookie_text[0].split(",")))
 
-        for product in self.products:
+        for product in self.__products:
             element = product.text.split("\n")
             if len(element) > 1:
                 product_text = element[1].split(" ")
@@ -140,26 +139,26 @@ class Bot:
                     product.click()
 
     async def actions(self):
-        if self.iteration % 5 == 0:
-            self.check_store_upgrades()
-            self.check_products_upgrades()
-            self.check_golden_cookies()
-            self.close_pop_ups()
-        self.cookie.click()
-        self.check_upgrades()
-        self.iteration += 1
+        if self.__iteration % 5 == 0:
+            self.__check_store_upgrades()
+            self.__check_products_upgrades()
+            self.__check_golden_cookies()
+            self.__close_pop_ups()
+        self.__cookie.click()
+        self.__check_upgrades()
+        self.__iteration += 1
 
     async def run(self):
         try:
-            WebDriverWait(self.driver, 60).until(
+            WebDriverWait(self.__driver, 60).until(
                 EC.presence_of_element_located((By.LINK_TEXT, "Got it!"))
             ).click()
-            if not self.playing_from_save_file:
-                self.change_bakery_name()
+            if not self.__playing_from_save_file:
+                self.__change_bakery_name()
             else:
-                self.load_save_file()
+                self.__load_save_file()
             self.grab_stats(False)
-            if not self.controlled:
+            if not self.__controlled:
                 while True:
                     await self.actions()
         except Exception as error:

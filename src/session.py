@@ -4,8 +4,8 @@ from pathlib import Path
 
 class Session:
     def __init__(self):
-        self.start_data = {}
-        self.end_data = {}
+        self.__start_data = {}
+        self.__end_data = {}
         self.save_file_loaded = False
 
     def save_session_stats(self, data: list, session_ending: bool):
@@ -19,9 +19,9 @@ class Session:
                 session_stats[stat_data[0]] = stat_data[1]
 
         if not session_ending:
-            self.start_data = session_stats
+            self.__start_data = session_stats
         else:
-            self.end_data = session_stats
+            self.__end_data = session_stats
 
     def save_session(self):
         data = json.loads(Path("data/sessions.json").read_text())
@@ -34,8 +34,8 @@ class Session:
 
         session_data = {"session_count": len(data) + 1,
                         "save_file": save_file_data,
-                        "stats_from_start": self.start_data,
-                        "stats_at_end": self.end_data}
+                        "stats_from_start": self.__start_data,
+                        "stats_at_end": self.__end_data}
         data.append(session_data)
 
         formatted = json.dumps(data, sort_keys=False,
