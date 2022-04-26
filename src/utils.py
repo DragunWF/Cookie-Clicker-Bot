@@ -21,3 +21,14 @@ class Utils:
     def tts_print(text, color="white"):
         Utils.colored_print(text, color)
         Utils.text_to_speech(text)
+
+    @staticmethod
+    def user_choose(question: str) -> bool:
+        green, white = fg("light_green"), fg("white")
+        while True:
+            option = input(green + f"{question} (y/n) " + white).strip().lower()
+            if option == "y" or option == "yes":
+                return True
+            if option == "n" or option == "no":
+                return False
+            Utils.colored_print("Invalid option!", color="red")

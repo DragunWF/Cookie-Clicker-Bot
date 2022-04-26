@@ -13,22 +13,12 @@ green, yellow, cyan, white = fg("light_green"), fg(
     "light_yellow"), fg("light_cyan"), fg("white")
 
 
-def user_choose(question: str) -> bool:
-    while True:
-        option = input(green + f"{question} (y/n) " + white).strip().lower()
-        if option == "y" or option == "yes":
-            return True
-        if option == "n" or option == "no":
-            return False
-        Utils.colored_print("Invalid option!", color="red")
-
-
 def configuration(settings: dict) -> dict:
     Utils.colored_print("Warning: Invalid configuration will result in an error!", color="red")
-    settings["controlled"] = user_choose("Do you want the bot's automation to be controlled?")
+    settings["controlled"] = Utils.user_choose("Do you want the bot's automation to be controlled?")
 
     if settings["controlled"]:
-        default_controls = user_choose("Do you want to use the default controls?")
+        default_controls = Utils.user_choose("Do you want to use the default controls?")
         if not default_controls:
             start_key = input(green + "Key for starting automation" + white).strip().lower()
             stop_key = input(yellow + "Key for stopping automation" + white).strip().lower()
@@ -37,7 +27,7 @@ def configuration(settings: dict) -> dict:
             settings["controls"]["stop_automation"] = stop_key
             settings["controls"]["quit_game"] = quit_key
             
-    load_save = user_choose("Do you want to load a save file?")
+    load_save = Utils.user_choose("Do you want to load a save file?")
     if load_save:
         Utils.colored_print("Specify a valid save file path from this project's main root directory",
                             color="yellow")
@@ -46,7 +36,7 @@ def configuration(settings: dict) -> dict:
     else:
         settings["saves"]["load_save_file"] = False
 
-        randomized_name = user_choose("Do you want to have a randomized bakery name?")
+        randomized_name = Utils.user_choose("Do you want to have a randomized bakery name?")
         if randomized_name:
             bakery_name = input(yellow + "Your bakery name: " + white).strip()
             settings["bakery_names"] = [bakery_name]
@@ -56,7 +46,7 @@ def configuration(settings: dict) -> dict:
 
 def main():
     settings = json.loads(Path("data/settings.json").read_text())[0]
-    default = user_choose("Do you want to use the default settings?")
+    default = Utils.user_choose("Do you want to use the default settings?")
 
     if not default:
         settings = configuration(settings)
