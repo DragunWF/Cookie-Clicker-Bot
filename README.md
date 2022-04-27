@@ -1,5 +1,9 @@
 # Cookie Clicker Bot
 
+![GitHub top language](https://img.shields.io/github/languages/top/DragunWF/Cookie-Clicker-Bot)
+![Lines of code](https://img.shields.io/tokei/lines/github/DragunWF/Cookie-Clicker-Bot)
+![GitHub repo size](https://img.shields.io/github/repo-size/DragunWF/Cookie-Clicker-Bot)
+
 ## Table Of Contents
 
 - [Description](#Description)
