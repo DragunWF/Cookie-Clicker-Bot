@@ -10,12 +10,15 @@
 - [Functionalities](#Functionalities)
 - [Setup](#Setup)
 - [Details](#Details)
+- [Packages](#Packages)
 - [Contact](#Contact)
 
 ## Description
 
 Hello! This is a Python bot powered with Selenium. A bot that automates cookie clicker
 for your desires. Have fun!
+
+**Note:** This project is not being updated anymore.
 
 ## Functionalities
 
@@ -77,6 +80,13 @@ for your desires. Have fun!
   though, without the controls the bot doesn't automatically save your game so you have to
   do it manually in the game.
 - For the controls you have to hold the key for it to trigger instead of pressing it lightly.
+
+### Modules
+
+- `selenium=4.2.0`
+- `webdriver-manager=3.7.0`
+- `pyttsx=2.87`
+- `keyboard`
 
 ### Controls
 
