@@ -100,4 +100,4 @@ property.
 ## Contact
 
 If you want to contact me about suggestions or bugs to report with this project, you
-can contact me via discord. My discord tag is **DragonWF#9321**.
+can contact me via discord. My discord tag is **dragunwf**.
